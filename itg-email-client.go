@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/scorredoira/email"
 	"io/ioutil"
 	"log"
@@ -59,7 +60,9 @@ func main() {
 
 	auth := smtp.PlainAuth("", *usernamePtr, *passwordPtr, *hostPtr)
 
-	hostPort := *toPtr + ":" + string(*portPtr)
+	portStr := fmt.Sprint(*portPtr)
+	hostPort := *hostPtr + ":" + portStr
+
 	if err := email.Send(hostPort, auth, m); err != nil {
 		log.Fatal(err)
 	}
