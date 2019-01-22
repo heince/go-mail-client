@@ -22,6 +22,7 @@ func main() {
 	passwordPtr := flag.String("password", "", "-password=[password]")
 	hostPtr := flag.String("host", "localhost", "-host=[email server] (default to localhost)")
 	portPtr := flag.Uint("port", 25, "-port=[port number] (default to 25)")
+	noAuthPtr := flag.Bool("noauth", false, "-noauth")
 
 	flag.Parse()
 
@@ -58,13 +59,19 @@ func main() {
 		}
 	}
 
-	auth := smtp.PlainAuth("", *usernamePtr, *passwordPtr, *hostPtr)
-
 	portStr := fmt.Sprint(*portPtr)
 	hostPort := *hostPtr + ":" + portStr
 
-	if err := email.Send(hostPort, auth, m); err != nil {
-		log.Fatal(err)
+	if *noAuthPtr == true {
+		if err := email.Send(hostPort, nil, m); err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		auth := smtp.PlainAuth("", *usernamePtr, *passwordPtr, *hostPtr)
+
+		if err := email.Send(hostPort, auth, m); err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 
