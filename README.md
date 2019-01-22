@@ -1,2 +1,2 @@
 # go-mail-client
-simple mail client support html content type and attachment
+simple mail client support sending html content type and attachment
