@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/mail"
 	"net/smtp"
+	"strings"
 )
 
 func main() {
@@ -51,7 +52,7 @@ func main() {
 	}
 
 	m.From = mail.Address{Address: *fromPtr}
-	m.To = []string{*toPtr}
+	m.To = strings.Split(*toPtr, ",")
 
 	if *attachmentPtr != "empty" {
 		if err := m.Attach(*attachmentPtr); err != nil {
